@@ -1,0 +1,31 @@
+
+<!-- app/views/patients/_patients_table.html.erb -->
+<table id="patients-table" class="table table-bordered table-striped">
+  <!-- app/views/patients/_patients_table.html.erb -->
+<thead>
+  <tr>
+    <th>ID</th>
+    <th>First Name</th>
+    <th>Last Name</th>
+    <th>Date of Birth</th>
+    <th>Email</th>
+    <!-- Add more columns as needed -->
+  </tr>
+</thead>
+<tbody>
+  <% @patients.each do |patient| %>
+    <tr>
+      <td><%= patient.id %></td>
+      <td><%= patient.first_name %></td>
+      <td><%= patient.last_name %></td>
+      <td><%= patient.date_of_birth %></td>
+      <td><%= patient.email %></td>
+      <!-- Add more columns as needed -->
+    </tr>
+  <% end %>
+      <%#= will_paginate @patients %>
+
+</tbody>
+
+</table>
+

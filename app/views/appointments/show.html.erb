@@ -1,0 +1,16 @@
+<h1><%= @patient.full_name %></h1>
+
+<!-- Display patient details -->
+
+<%= link_to 'Schedule Appointment', new_patient_appointment_path(@patient), class: 'btn btn-success' %>
+
+<!-- Display existing appointments if needed -->
+<% if @patient.appointments.any? %>
+  <h2>Appointments</h2>
+  <ul>
+    <% @patient.appointments.each do |appointment| %>
+      <li><%= appointment.scheduled_at %></li>
+    <% end %>
+  </ul>
+<% end %>
+

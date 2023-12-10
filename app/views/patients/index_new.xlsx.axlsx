@@ -1,0 +1,11 @@
+# app/views/patients/index.xlsx.axlsx
+Axlsx::Package.new do |p|
+  p.workbook.add_worksheet(name: 'Patients') do |sheet|
+    sheet.add_row ['ID', 'First Name', 'Last Name', 'Date of Birth', 'Email']
+
+    @patients.each do |patient|
+      sheet.add_row [patient.id, patient.first_name, patient.last_name, patient.date_of_birth, patient.email]
+    end
+  end
+end
+

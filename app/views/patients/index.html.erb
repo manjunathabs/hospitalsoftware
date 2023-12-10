@@ -1,0 +1,95 @@
+<!-- app/views/patients/index.html.erb -->
+<h1>Patient List</h1>
+
+<%= link_to 'New Patient', new_patient_path, class: 'btn btn-primary' %>
+
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-4 mb-2">
+      <%= text_field_tag 'from_date', '', class: 'form-control', id: 'from-date-picker', placeholder: 'From Date' %>
+    </div>
+    <div class="col-md-4 mb-2">
+      <%= text_field_tag 'to_date', '', class: 'form-control', id: 'to-date-picker', placeholder: 'To Date' %>
+    </div>
+    <div class="col-md-4">
+      <%= button_tag 'Apply Filter', class: 'btn btn-success', id: 'apply-filter-btn' %>
+    </div>
+  </div>
+
+
+<div class="row">
+    
+      <%= render partial: 'patients_table', locals: { patients: @patients } %>
+    </div>
+  </div>
+
+</div>
+
+
+
+
+
+<%= link_to 'Print Report', patients_path(format: 'pdf'), class: 'btn btn-success', target: '_blank' %>
+<%= link_to 'Export to Excel', patients_path(format: 'xlsx'), class: 'btn btn-info' %>
+
+<%= line_chart @registrations_data, prefix: "Patients registered on", class: 'chart' %>
+<%= bar_chart @registrations_data, prefix: "Patients registered on", class: 'chart' %>
+
+<style>
+  .chart {
+    margin-top: 20px;
+  }
+</style>
+
+<%= javascript_tag do %>
+  $(document).ready(function(){
+    $('#from-date-picker, #to-date-picker').datepicker({
+      format: 'yyyy-mm-dd',
+      autoclose: true,
+      clearBtn: true,
+      todayHighlight: true
+    });
+    
+    $('#apply-filter-btn').on('click', function(){
+      var fromDate = $('#from-date-picker').val();
+      var toDate = $('#to-date-picker').val();
+      $.ajax({
+    url: '<%= filter_by_date_patients_path %>',
+    type: 'GET',
+    data: { from_date: fromDate, to_date: toDate },
+    success: function(data) {
+      $('#patients-table').html(data);
+      // Perform any additional UI updates or logic here
+    }
+  });
+    });
+    });
+
+
+
+
+
+
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

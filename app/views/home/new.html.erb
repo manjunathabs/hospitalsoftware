@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hospital Software</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+
+    header {
+      background-color: #007bff;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 50px;
+    }
+
+    .features {
+      text-align: center;
+      padding: 50px;
+    }
+
+    .feature {
+      margin-bottom: 30px;
+    }
+
+    footer {
+      background-color: #333;
+      color: #fff;
+      padding: 10px;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Hospital Software</h1>
+  </header>
+
+  <nav>
+	  <%= link_to 'Patient Registration', new_patient_path %>
+          <%= link_to 'Patient Report', patients_path %>
+          <%#= link_to 'Patient Report', patient_appointments_path %>
+<%#= link_to 'Schedule Appointment', new_patient_appointment_path(@patient) %>
+<%= link_to 'Appointments', appointments_path %>
+<%#= link_to 'Appointments', patient_appointments_path(@patient) %>
+
+
+
+
+   <%= link_to 'Billing', billings_path %>
+
+    <a href="#contact">Contact</a>
+    <a href="#about">About</a>
+  </nav>
+
+  <div class="hero">
+    <h2>Welcome to our Hospital Software</h2>
+    <p>Streamline your hospital operations with our comprehensive software solution.</p>
+  </div>
+
+
+  <div id="features" class="features">
+    <h2>Key Features</h2>
+    <div class="feature">
+      <h3>Appointment Scheduling</h3>
+      <p>Efficiently manage patient appointments with our easy-to-use scheduling system.</p>
+    </div>
+    <div class="feature">
+      <h3>Electronic Health Records (EHR)</h3>
+      <p>Securely store and access patient health records electronically for improved care.</p>
+    </div>
+    <div class="feature">
+      <h3>Billing and Invoicing</h3>
+      <p>Streamline billing processes and generate invoices with accuracy and speed.</p>
+    </div>
+  </div>
+
+  <footer id="contact">
+    <p>Contact us at manjunathmanju761@gmail.com</p>
+  </footer>
+</body>
+</html>
+

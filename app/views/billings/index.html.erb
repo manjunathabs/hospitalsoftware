@@ -1,0 +1,73 @@
+<!-- app/views/bills/index.html.erb -->
+<h1>Billing History for <%= @patient.blank? ? '' : @patient.first_name %></h1>
+
+<!-- app/views/bills/index.html.erb -->
+
+<%= form_tag(billings_search_path, method: :get) do %>
+  <%= label_tag 'Patient ID' %>
+  <%= text_field_tag 'patient_id'%>
+  <%= submit_tag 'Search' %>
+<% end %>
+
+<% if !@billings.blank? %>
+  <table>
+    <thead>
+	    <tr>
+        <th>Sl No</th>
+        <th>Bill ID</th>
+        <th>Narration</th>
+        <th>Amount</th>
+        <!-- Add more columns as needed -->
+      </tr>
+    </thead>
+    <tbody>
+	    <% i = 1 %>
+      <% @billings.each do |bill| %>
+	      <tr>
+		      <td><%= i %></td>
+          <td><%= bill.id %></td>
+          <td><%= bill.narration %></td>
+          <td><%= number_to_currency(bill.amount) %></td>
+          <!-- Add more columns as needed -->
+	      </tr>
+	      <% i += 1 %>
+      <% end %>
+      <tr>
+        <td colspan="2"><strong>Total Amount:</strong></td>
+        <td><%= number_to_currency(@billings.sum(:amount)) %></td>
+        <!-- Add more columns as needed -->
+      </tr>
+    </tbody>
+  </table>
+
+  <%#= form_with(model: @patient, url: billings_search_path, method: :post) do |form| %>
+	  <%= form_with(model: @patient, url: make_payment_path(@patient), method: :post) do |form| %>
+   <% @billings.each do |bill| %>
+    <div class="field">
+      <%= check_box_tag 'billing_ids[]', bill.id %>
+      <%= label_tag "billing_#{bill.id}", "#{bill.id} - #{number_to_currency(bill.amount)}" %>
+    </div>
+  <% end %>
+ 
+
+    <div class="field">
+      <%= form.label :payment_amount %>
+      <%= form.text_field :payment_amount,:value=> @billings.sum(:amount) %>
+    </div>
+
+    <div class="field">
+      <%= form.label :payment_method %>
+      <%= form.select :payment_method, ['Credit/Debit Card', 'Cash', 'Upi'] %>
+    </div>
+
+    <div class="actions">
+      <%= form.submit 'Make Payment', class: 'btn btn-primary' %>
+    </div>
+  <% end %>
+<% else %>
+  <p>No Pending billing records found for this patient.</p>
+<% end %>
+
+
+<%= link_to 'Back to Patients', patients_path %>
+

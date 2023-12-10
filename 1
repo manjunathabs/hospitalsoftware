@@ -1,0 +1,16 @@
+class Patient < ApplicationRecord
+  before_create :generate_patient_id
+	  
+ validates :first_name, :last_name, :date_of_birth, :email, presence: true
+
+ private
+
+  def generate_patient_id
+    # Find the highest existing patient_id and increment it
+   # highest_id = Patient.maximum(:patient_id)
+    
+   # self.patient_id = highest_id ? (highest_id + 1).to_s.rjust(5, '0') : '00001'
+	  highest_id = Patient.maximum(:patient_id).to_i
+    self.patient_id = highest_id ? (highest_id + 1).to_s.rjust(5, '0') : '00001'
+  end
+end

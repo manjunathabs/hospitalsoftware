@@ -1,0 +1,78 @@
+<!-- app/views/appointments/new.html.erb -->
+<h1>New Appointment</h1>
+
+<%= form_with(model: [@patient, @appointment], url: patient_appointments_path(@patient), method: :post, html: { class: 'appointment-form' }) do |form| %>
+  <%= form.label :doctor_name %>
+  <%= form.text_field :doctor_name %>
+
+  <%= form.label :department_name %>
+  <%= form.text_field :department_name %>
+
+  <%= form.label :appointment_date %>
+  <%= form.text_field :appointment_date,value:Time.current.to_date, class: 'datepicker', placeholder: 'Select a date' %>
+
+  <%= form.label :timeslot_id %>
+  <%= form.collection_select :timeslot_id, @timeslots, :id, :display_time, prompt: 'Select a timeslot' %>
+
+  <!-- Add other fields as needed -->
+
+  <%= form.submit 'Schedule Appointment' %>
+<% end %>
+
+<%= link_to 'Back to Appointments', appointments_path, class: 'btn btn-secondary' %>
+
+<script>
+  $(function() {
+
+var datepicker = $('.datepicker');
+
+    datepicker.datepicker({
+      dateFormat: 'yy-mm-dd',
+      minDate: 0, // Prevent selecting past dates
+      onSelect: function(selectedDate) {
+        updateTimeslots(selectedDate);
+        datepicker.datepicker('destroy').datepicker(); // Destroy and reinitialize datepicker
+      }
+    });
+
+
+
+	   //   $('.datepicker').datepicker('setDate', new Date());
+
+    updateTimeslots($('.datepicker').val());
+
+    // You can also initialize timepicker for the timeslot field if needed
+    $('.timepicker').timepicker({
+      timeFormat: 'hh:mm tt',
+      stepMinute: 15,
+    });
+  });
+
+  function updateTimeslots(selectedDate) {
+    $.ajax({
+      url: '/appointments/available_timeslots',
+      method: 'GET',
+      data: { selected_date: selectedDate },
+      dataType: 'json',
+      success: function(data) {
+        updateTimeslotOptions(data);
+      },
+      error: function(error) {
+        console.log('Error fetching available timeslots:', error);
+      }
+    });
+  }
+
+  function updateTimeslotOptions(timeslots) {
+    var timeslotSelect = $('#appointment_timeslot_id');
+    timeslotSelect.empty();
+
+    $.each(timeslots, function(index, timeslot) {
+      timeslotSelect.append($('<option>', {
+        value: timeslot.id,
+        text: timeslot.display_time
+      }));
+    });
+  }
+</script>
+

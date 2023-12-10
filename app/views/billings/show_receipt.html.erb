@@ -1,0 +1,74 @@
+<!-- app/views/bills/show_receipt.html.erb -->
+<% if @paid_bills.any? %>
+  <div class="invoice">
+	  <div class="header">
+		  <div class="print-header">
+			  <!--   <img src="/images/bill_header.jpg" alt="Header Image" class="header-image" > -->
+		  </div>
+      <h1>Medical Billing Invoice</h1>
+      <p><strong>Patient:</strong> <%= @patient.first_name %> <%= @patient.last_name %></p>
+      <p><strong>Date:</strong> <%= l(Time.now, format: :long) %></p>
+    </div>
+
+    <div class="line"></div>
+
+    <table class="bill-table">
+      <thead>
+        <tr>
+          <th>Bill ID</th>
+          <th>Amount</th>
+	  <th>Status</th>
+	  <th>Narration</th>
+          <th>Payment Date</th>
+          <!-- Add more columns as needed -->
+        </tr>
+      </thead>
+      <tbody>
+        <% @paid_bills.each do |bill| %>
+          <tr>
+            <td><%= bill.id %></td>
+            <td><%= number_to_currency(bill.amount) %></td>
+	    <td><%= bill.status %></td>
+	    <td><%= bill.narration %></td>
+            <td><%= l(bill.updated_at, format: :long) %></td>
+            <!-- Add more columns as needed -->
+          </tr>
+          <tr class="spacer"></tr> <!-- Spacer line between rows -->
+        <% end %>
+      </tbody>
+    </table>
+
+    <div class="footer">
+      <p><strong>Total Amount Paid:</strong> <%= number_to_currency(@paid_bills.sum(&:amount)) %></p>
+      <p>Thank you for choosing our services!</p>
+    </div>
+
+    <div class="print-button">
+      <button onclick="window.print()">Print Invoice</button>
+    </div>
+  </div>
+<% else %>
+  <p>No paid bills found for this patient.</p>
+<% end %>
+
+
+
+
+<style>
+  @media print {
+    .print-button {
+      display: none;
+    }
+  
+
+  }
+  .print-button {
+      display: none;
+    }
+  .receipt {
+    /* Your existing styles for the receipt container */
+  }
+
+  /* ... (other existing styles) ... */
+</style>
+
