@@ -1,3 +1,5 @@
+require 'numbers_and_words'
+
 class Patient < ApplicationRecord
   before_create :generate_patient_id
     has_many :appointments
@@ -13,7 +15,19 @@ scope :registrations_per_day, ->(start_date, end_date) {
       .count
   }
 
+def registration_amount
+    reg_billing = billing.find_by(narration: 'REG')
 
+    return 0 unless reg_billing # Return 0 if there's no billing record with 'REG'
+
+    reg_billing.amount
+  end
+def registration_amount_in_words
+	reg_amount = billing.find_by(narration: 'REG').amount
+	 
+    # Convert the registration amount into words
+	I18n.with_locale(:en) { reg_amount.to_f.to_words }
+  end
 
 
 
@@ -43,7 +57,9 @@ def self.filter_by_date_range(from_date, to_date)
     
    # self.patient_id = highest_id ? (highest_id + 1).to_s.rjust(5, '0') : '00001'
 	  highest_id = Patient.maximum(:patient_id).to_i
-    self.patient_id = highest_id ? (highest_id + 1).to_s.rjust(5, '0') : '00001'
+    new_id = highest_id ? (highest_id + 1).to_s.rjust(5, '0') : '00001'
+
+    self.patient_id = "PAT#{new_id}"
   end
   
 

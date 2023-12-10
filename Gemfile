@@ -42,6 +42,8 @@ gem 'bootstrap-datepicker-rails'
 gem 'jquery-rails'
 gem 'will_paginate'
 gem 'rails-ujs'
+gem 'numbers_and_words', '~> 0.11.12'
+
 
 # Gemfile
 

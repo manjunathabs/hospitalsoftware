@@ -7,25 +7,100 @@
   </div>
 <% end %>
 
-<div>
-  <strong>ID:</strong> <%= @patient.patient_id %>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+  }
+
+  .registration-slip {
+    max-width: 400px;
+    margin: 20px auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden; /* Clearfix for floated elements */
+  }
+
+  .header,
+  .footer {
+    padding: 10px;
+    background-color: #f0f0f0;
+    text-align: center;
+    border-bottom: 1px dotted #999; /* Dotted line below header and above footer */
+  }
+
+  .content {
+    padding: 20px;
+  }
+
+  strong {
+    font-weight: bold;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 8px 12px;
+    margin-top: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    text-decoration: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .column {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .registration-details {
+    margin-bottom: 20px;
+  }
+</style>
+
+<div class="registration-slip column">
+  <div class="header">
+    <h2>Hospital Registration Slip</h2>
+  </div>
+
+  <div class="content">
+    <div class="registration-details">
+      <strong>ID:</strong> <%= @patient.patient_id %><br>
+      <strong>First Name:</strong> <%= @patient.first_name %><br>
+      <strong>Last Name:</strong> <%= @patient.last_name %><br>
+      <strong>Date of Birth:</strong> <%= @patient.date_of_birth %><br>
+      <strong>Email:</strong> <%= @patient.email %><br>
+    </div>
+
+    <!-- Additional Details -->
+    <div class="registration-details">
+      <strong>Registration Amount:</strong> <%= number_to_currency(@patient.registration_amount) %><br>
+      <strong>Registration Amount in Words:</strong> <%= @patient.registration_amount_in_words %> <!-- Display amount in words -->
+    </div>
+
+    <!-- Print Button -->
+    <button class="btn" onclick="printRegistrationSlip()">Print</button>
+  </div>
+
+  <div class="footer">
+    <p>&copy; <%= Time.now.year %> Your Hospital Name</p>
+  </div>
 </div>
 
-<div>
-  <strong>First Name:</strong> <%= @patient.first_name %>
-</div>
 
-<div>
-  <strong>Last Name:</strong> <%= @patient.last_name %>
-</div>
+<script>
+  function printRegistrationSlip() {
+    var printContents = document.querySelector('.registration-slip').innerHTML;
+    var originalContents = document.body.innerHTML;
 
-<div>
-  <strong>Date of Birth:</strong> <%= @patient.date_of_birth %>
-</div>
+    document.body.innerHTML = printContents;
 
-<div>
-  <strong>Email:</strong> <%= @patient.email %>
-</div>
+    window.print();
 
-<%= link_to 'Back', patients_path, class: 'btn btn-secondary' %>
+    document.body.innerHTML = originalContents;
+  }
+</script>
+
+</body>
+</html>
 
