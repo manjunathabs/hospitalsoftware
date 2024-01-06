@@ -12,14 +12,14 @@ class BillingsController < ApplicationController
 
 def search
     patient_id = params[:patient_id]
-    @patient = Patient.find_by(id: patient_id)
+    @patient = Patient.find_by(patient_id: patient_id)
     
     if @patient
 	    @billings = @patient.billing.where(status: 'Active')
   #    redirect_to billings_path(@billings)
     else
       flash[:alert] = "Patient with ID #{patient_id} not found."
-      redirect_to bills_path
+     # redirect_to billings_path
     end
     render :index
   end
@@ -33,6 +33,11 @@ def search
 
     if billing_ids.present?
       Billing.where(id: billing_ids).update_all(status: 'paid')
+
+      billing_ids.each do |billing_id|
+        billing = Billing.find(billing_id)
+        @patient.make_payment_rec(billing.amount, billing)
+      end
      # generate_billing_slips(billing_ids)
      redirect_to show_receipt_path(@patient), notice: 'Payments successful.'
     else

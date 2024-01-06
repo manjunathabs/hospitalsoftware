@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_12_01_103751) do
+ActiveRecord::Schema[7.0].define(version: 2023_12_11_082440) do
   create_table "appointments", force: :cascade do |t|
     t.integer "patient_id"
     t.datetime "scheduled_at"
@@ -57,6 +57,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_103751) do
     t.datetime "updated_at", null: false
   end
 
+  create_table "transaction_details", force: :cascade do |t|
+    t.string "receipt_number"
+    t.string "narration"
+    t.decimal "amount"
+    t.integer "patient_id", null: false
+    t.integer "billing_id", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["billing_id"], name: "index_transaction_details_on_billing_id"
+    t.index ["patient_id"], name: "index_transaction_details_on_patient_id"
+  end
+
   create_table "user_roles", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "role_id", null: false
@@ -75,6 +87,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_12_01_103751) do
 
   add_foreign_key "appointments", "timeslots"
   add_foreign_key "billings", "patients"
+  add_foreign_key "transaction_details", "billings"
+  add_foreign_key "transaction_details", "patients"
   add_foreign_key "user_roles", "roles"
   add_foreign_key "user_roles", "users"
 end

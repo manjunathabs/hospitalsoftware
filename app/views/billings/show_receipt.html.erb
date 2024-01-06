@@ -15,24 +15,34 @@
     <table class="bill-table">
       <thead>
         <tr>
+          <th>Sl No</th>
           <th>Bill ID</th>
           <th>Amount</th>
 	  <th>Status</th>
 	  <th>Narration</th>
+    <th>Receipt Number</th>
           <th>Payment Date</th>
           <!-- Add more columns as needed -->
         </tr>
+
       </thead>
       <tbody>
+        <% i = 1 %>
         <% @paid_bills.each do |bill| %>
           <tr>
+            <td><%= i %> </td>
             <td><%= bill.id %></td>
             <td><%= number_to_currency(bill.amount) %></td>
 	    <td><%= bill.status %></td>
 	    <td><%= bill.narration %></td>
+      
+  <% transaction_detail = TransactionDetail.find_by(billing_id: bill.id) %>
+
+      <td><%= transaction_detail.receipt_number %></td>
             <td><%= l(bill.updated_at, format: :long) %></td>
             <!-- Add more columns as needed -->
           </tr>
+          <% i = i + 1 %>
           <tr class="spacer"></tr> <!-- Spacer line between rows -->
         <% end %>
       </tbody>
@@ -50,7 +60,14 @@
 <% else %>
   <p>No paid bills found for this patient.</p>
 <% end %>
+<button class="print-btn" onclick="printReceipt()">Print Receipt</button>
 
+
+<script>
+  function printReceipt() {
+    window.print();
+  }
+</script>
 
 
 
@@ -69,6 +86,27 @@
     /* Your existing styles for the receipt container */
   }
 
+  th {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px;
+  }
+
+
+  button.print-btn {
+    background-color: #007BFF;
+    color: #fff;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin-top: 20px;
+  }
+
+  @media print {
+    /* Add your print-specific styles here */
+    body {
+      font-size: 12pt;
+    }
   /* ... (other existing styles) ... */
 </style>
 
